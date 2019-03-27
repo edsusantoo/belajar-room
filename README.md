@@ -1,7 +1,7 @@
 # Membuat CRUD dengan ROOM
 
 # Langkah - Langkah Konfigurasi ROOM
-
+1. membuat tabel-tabel yang diperlukan
 
 
 --------
