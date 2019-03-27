@@ -18,16 +18,16 @@ interface UserDao {
 
     @Query(
         "UPDATE users SET " +
-                "username :username, " +
-                "email :email, " +
-                "password :password, " +
-                "no_telp :notelp, " +
-                "alamat :alamat " +
-                "WHERE id :id"
+                "username =:username, " +
+                "email =:email, " +
+                "password =:password, " +
+                "no_telp =:notelp, " +
+                "alamat =:alamat " +
+                "WHERE id =:id"
     )
     fun update(id: Int, username: String, email: String, password: String, notelp: String, alamat: String)
 
-    @Query("SELECT * FROM users WHERE id=:id")
-    fun getUser(id: Int)
+    @Query("SELECT * FROM users WHERE id =:id")
+    fun getUser(id: Int):User
 
 }
