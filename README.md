@@ -3,6 +3,7 @@
 # Langkah - Langkah Konfigurasi ROOM
 1. membuat tabel-tabel yang diperlukan
 2. membuat Dao dari tabel yang sudah dibuat
+3. membuat databasenya
 
 
 --------
