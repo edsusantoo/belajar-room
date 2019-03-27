@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 
-@Entity(tableName = "user")
+@Entity(tableName = "users")
 data class User(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Int,
     @ColumnInfo(name = "username") var username: String,
