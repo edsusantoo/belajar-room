@@ -4,8 +4,9 @@
 
 
 
-
-# CATATAN
+--------
+CATATAN
+--------
 *** Perlu untuk diperhatikan pula bahwa untuk melakukan operasi seperti memasukkan data,
     mengambil data dan lain-lain harus dilakukan di luar mainthread dan ini adalah ada aturan Room secara default.
     Hal ini disebakan karena melakukan query data pada mainthread dapat membuat aplikasi kita menjadi lambat.
