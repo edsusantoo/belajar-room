@@ -3,6 +3,7 @@ package com.edsusantoo.bismillah.belajarroom.ui.tambah
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.edsusantoo.bismillah.belajarroom.R
 import com.edsusantoo.bismillah.belajarroom.data.local.db.BelajarRoomDB
 import com.edsusantoo.bismillah.belajarroom.data.local.db.model.User
@@ -12,8 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_tambah_user.*
 
-class TambahUserActivitiy : AppCompatActivity() {
-
+class TambahUserActivitiy : AppCompatActivity(),SwipeRefreshLayout.OnRefreshListener {
 
     private var database: BelajarRoomDB? = null
     private val compositeDisposable = CompositeDisposable()
@@ -63,5 +63,9 @@ class TambahUserActivitiy : AppCompatActivity() {
         super.onDestroy()
         BelajarRoomDB.destroyInstance()
         compositeDisposable.dispose()
+    }
+
+    override fun onRefresh() {
+
     }
 }
