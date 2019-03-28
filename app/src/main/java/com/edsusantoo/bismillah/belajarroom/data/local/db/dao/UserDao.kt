@@ -28,6 +28,6 @@ interface UserDao {
     fun update(id: Int, username: String, email: String, password: String, notelp: String, alamat: String)
 
     @Query("SELECT * FROM users WHERE id =:id")
-    fun getUser(id: Int):User
+    fun getUser(id: Int):LiveData<List<User>>
 
 }
