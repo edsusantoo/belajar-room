@@ -3,12 +3,13 @@ package com.edsusantoo.bismillah.belajarroom.data.local.db.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.edsusantoo.bismillah.belajarroom.data.local.db.model.User
+import io.reactivex.Maybe
 
 @Dao
 interface UserDao {
 
     @Query("SELECT * FROM users")
-    fun getAll(): LiveData<List<User>>
+    fun getAll(): Maybe<MutableList<User>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: User)

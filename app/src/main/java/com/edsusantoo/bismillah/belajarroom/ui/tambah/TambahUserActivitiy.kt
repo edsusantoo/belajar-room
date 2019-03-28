@@ -24,6 +24,7 @@ class TambahUserActivitiy : AppCompatActivity(),SwipeRefreshLayout.OnRefreshList
         setupDB()
 
         swipe_refresh.isRefreshing = false
+        swipe_refresh.setOnRefreshListener(this)
 
         img_simpan.setOnClickListener {
             tambahUser(

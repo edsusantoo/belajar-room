@@ -2,10 +2,11 @@
     <string name="app_name">Belajar ROOM</string>
     <string name="tambah_user">Tambah User</string>
     <string name="list_user">List User</string>
-    <string name="username">Username</string>
-    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="no_telpon">No. Telpon</string>
     <string name="alamat">Alamat</string>
+    <string name="no_telp">No. Telp</string>
     <string name="minus">-</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
 </resources>
