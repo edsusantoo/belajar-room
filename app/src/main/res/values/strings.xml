@@ -9,4 +9,6 @@
     <string name="minus">-</string>
     <string name="username">Username</string>
     <string name="email">Email</string>
+    <string name="hapus_user">Hapus User</string>
+    <string name="delete_user">Delete User</string>
 </resources>

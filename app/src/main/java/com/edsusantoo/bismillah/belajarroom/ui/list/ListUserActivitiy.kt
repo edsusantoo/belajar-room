@@ -1,22 +1,31 @@
 package com.edsusantoo.bismillah.belajarroom.ui.list
 
 import android.os.Bundle
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.edsusantoo.bismillah.belajarroom.R
 import com.edsusantoo.bismillah.belajarroom.data.local.db.BelajarRoomDB
 import com.edsusantoo.bismillah.belajarroom.data.local.db.model.User
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_list_user.*
 
+
 class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private var database: BelajarRoomDB? = null
     private val compositeDisposable = CompositeDisposable()
+    private var selectedUserList: MutableList<User> = mutableListOf()
+    private var userList: MutableList<User>? = null
+    private var menuContext: Menu? = null
+    private var mActionMode: ActionMode? = null
+    private var isMultiSelect: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +43,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
 
     private fun setupRecycler() {
         recycler_user.layoutManager = LinearLayoutManager(this)
+        recycler_user.itemAnimator = DefaultItemAnimator()
     }
 
     private fun getListUser() {
@@ -42,9 +52,10 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                {
+                { it ->
                     swipe_refresh.isRefreshing = false
-                    setupDataRecycler(it)
+                    userList = it.toMutableList()
+                    setupDataRecycler(userList!!)
                 },
                 { error ->
                     swipe_refresh.isRefreshing = false
@@ -58,10 +69,11 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
     }
 
     private fun setupDataRecycler(data: MutableList<User>) {
-        val listUserAdapter = ListUserAdapter(data)
+        val listUserAdapter = ListUserAdapter(data, selectedUserList, listUserListener)
         recycler_user.adapter = listUserAdapter
         listUserAdapter.notifyDataSetChanged()
-
+        //agarr recycleview tidak kembali keatas saat ada data baru
+        //listUserAdapter.notifyItemRangeInserted(listUserAdapter.itemCount, data.size - 1)
     }
 
     override fun onDestroy() {
@@ -74,4 +86,108 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         getListUser()
     }
 
+    private val listUserListener = object : ListUserAdapter.OnListUserListener {
+        override fun onItemLongClick(user: User, view: View?, position: Int) {
+            when (view?.id) {
+                R.id.card_item_user -> {
+                    if (!isMultiSelect) {
+                        isMultiSelect = true
+                        if (mActionMode == null) {
+                            mActionMode = startActionMode(mActionModeCallback)
+
+                        }
+                    }
+
+                    multi_select(position)
+                }
+
+            }
+        }
+
+        override fun onItemClick(user: User, view: View?, position: Int) {
+            when (view?.id) {
+                R.id.card_item_user -> {
+                    if (isMultiSelect) {
+                        multi_select(position)
+                    } else {
+                        Toast.makeText(applicationContext, "CLCICK$position", Toast.LENGTH_LONG).show()
+                    }
+
+                }
+
+            }
+        }
+
+    }
+
+    private val mActionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+            return when (item?.itemId) {
+                R.id.action_delete -> {
+                    Toast.makeText(applicationContext, "CLCICK", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            val inflater: MenuInflater = mode!!.menuInflater
+            inflater.inflate(R.menu.user_menu, menu)
+            menuContext = menu
+            swipe_refresh.isEnabled = false
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            return false
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            mActionMode = null
+            isMultiSelect = false
+            selectedUserList.clear()
+            setupDataRecycler(userList!!)
+
+            swipe_refresh.isEnabled = true
+        }
+
+    }
+
+    fun deleteUser(user: User) {
+        swipe_refresh.isRefreshing = true
+        compositeDisposable.add(Observable.fromCallable { database!!.userDao().delete(user) }
+            .subscribeOn(Schedulers.computation())
+            .subscribe(
+                {
+                    swipe_refresh.isRefreshing = false
+                    getListUser()
+                },
+                { error ->
+                    swipe_refresh.isRefreshing = false
+                    Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+                },
+                {
+                    swipe_refresh.isRefreshing = false
+                })
+        )
+    }
+
+    fun multi_select(position: Int) {
+        if (mActionMode != null) {
+
+            if (selectedUserList.contains(userList?.get(position)))
+                selectedUserList.remove(userList?.get(position))
+            else
+                selectedUserList.add(userList!![position])
+
+            if (selectedUserList.size > 0)
+                mActionMode?.title = "" + selectedUserList.size
+            else
+                mActionMode?.title = ""
+
+            setupDataRecycler(userList!!)
+
+        }
+    }
 }

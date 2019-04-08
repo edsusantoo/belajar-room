@@ -17,3 +17,10 @@ CATATAN
     Pada tutorial ini saya akan menggunakan RxJava :).
 
 
+
+#Thanks
+https://medium.com/asos-techblog/style-actionmode-on-android-5e613fa77c32 (ActionMode)
+
+
+
+
