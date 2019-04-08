@@ -3,6 +3,7 @@ package com.edsusantoo.bismillah.belajarroom.ui.list
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
     private var menuContext: Menu? = null
     private var mActionMode: ActionMode? = null
     private var isMultiSelect: Boolean = false
+    private lateinit var user:User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +96,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
                         isMultiSelect = true
                         if (mActionMode == null) {
                             mActionMode = startActionMode(mActionModeCallback)
+                            this@ListUserActivitiy.user =user
 
                         }
                     }
@@ -124,7 +127,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             return when (item?.itemId) {
                 R.id.action_delete -> {
-                    Toast.makeText(applicationContext, "CLCICK", Toast.LENGTH_SHORT).show()
+                    showDialogs("Peringatan!","Apakah anda yakin ingin menghapus ini ?")
                     true
                 }
                 else -> false
@@ -161,7 +164,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
             .subscribe(
                 {
                     swipe_refresh.isRefreshing = false
-                    getListUser()
+                    //getListUser()
                 },
                 { error ->
                     swipe_refresh.isRefreshing = false
@@ -189,5 +192,26 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
             setupDataRecycler(userList!!)
 
         }
+    }
+
+    fun showDialogs(title: String, message: String) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+        builder.setMessage(message)
+
+        builder.setPositiveButton("Ya") { _, _ ->
+
+            deleteUser(user)
+        }
+
+        builder.setNegativeButton(
+            "Tidak"
+        ) { _, _ ->
+
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+
     }
 }
