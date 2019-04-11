@@ -15,85 +15,145 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_arrow_back_white"
-                app:title="Detail User"
-                app:titleTextColor="@android:color/white"/>
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    app:title="Detail User"
+                    app:navigationIcon="@drawable/ic_arrow_back_white"
+                    app:titleTextColor="@android:color/white"/>
+
+            <ImageView
+                    android:id="@+id/img_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_edit_white"
+                    android:contentDescription="@string/minus"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.cardview.widget.CardView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            android:layout_margin="16dp">
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/username"
-                    android:textAllCaps="false"
-                    android:textStyle="bold"/>
-            <TextView
-                    android:id="@+id/txt_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/minus"
-                    android:textAllCaps="false"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/email"
-                    android:textAllCaps="false"
-                    android:textStyle="bold"/>
-            <TextView
-                    android:id="@+id/txt_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/minus"
-                    android:textAllCaps="false"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/no_telp"
-                    android:textAllCaps="false"
-                    android:textStyle="bold"/>
-            <TextView
-                    android:id="@+id/txt_notelp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/minus"
-                    android:textAllCaps="false"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/alamat"
-                    android:textAllCaps="false"
-                    android:textStyle="bold"/>
-            <TextView
-                    android:id="@+id/txt_alamat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/minus"
-                    android:textAllCaps="false"/>
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
-        </LinearLayout>
+            <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="5dp"
+                    android:layout_margin="16dp">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                    <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            style="@style/TextInputLayoutOutlineBoxDense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_username"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:focusable="false"
+                                android:enabled="false"
+                                android:hint="@string/username"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            style="@style/TextInputLayoutOutlineBoxDense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_email"
+                                android:enabled="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textEmailAddress"
+                                android:focusable="false"
+                                android:hint="@string/email"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            app:passwordToggleEnabled="true"
+                            style="@style/TextInputLayoutOutlineBoxDense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_password"
+                                android:enabled="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"
+                                android:focusable="false"
+                                android:hint="@string/password"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            style="@style/TextInputLayoutOutlineBoxDense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_notelp"
+                                android:enabled="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:digits="0123456789"
+                                android:focusable="false"
+                                android:hint="@string/no_telpon"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            style="@style/TextInputLayoutOutlineBoxDense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_alamat"
+                                android:enabled="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:inputType="textMultiLine"
+                                android:focusable="false"
+                                android:hint="@string/alamat"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

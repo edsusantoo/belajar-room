@@ -118,7 +118,9 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
                     if (isMultiSelect) {
                         multi_select(position)
                     } else {
-                        startActivity(Intent(this@ListUserActivitiy,DetailActivity::class.java))
+                        val i = Intent(this@ListUserActivitiy, DetailActivity::class.java)
+                        i.putExtra("datauser", user)
+                        startActivity(i)
                     }
 
                 }
