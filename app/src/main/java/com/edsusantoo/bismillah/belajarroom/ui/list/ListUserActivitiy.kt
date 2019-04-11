@@ -27,7 +27,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
     private var menuContext: Menu? = null
     private var mActionMode: ActionMode? = null
     private var isMultiSelect: Boolean = false
-    private lateinit var user:User
+    private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +96,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
                         isMultiSelect = true
                         if (mActionMode == null) {
                             mActionMode = startActionMode(mActionModeCallback)
-                            this@ListUserActivitiy.user =user
+                            this@ListUserActivitiy.user = user
 
                         }
                     }
@@ -127,7 +127,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             return when (item?.itemId) {
                 R.id.action_delete -> {
-                    showDialogs("Peringatan!","Apakah anda yakin ingin menghapus ini ?")
+                    showDialogs("Peringatan!", "Apakah anda yakin ingin menghapus ini ?")
                     true
                 }
                 else -> false
@@ -157,14 +157,20 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
 
     }
 
-    fun deleteUser(user: User) {
+    private fun deleteUser(user: User) {
         swipe_refresh.isRefreshing = true
         compositeDisposable.add(Observable.fromCallable { database!!.userDao().delete(user) }
-            .subscribeOn(Schedulers.computation())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     swipe_refresh.isRefreshing = false
-                    //getListUser()
+
+
+                    mActionMode?.finish()
+                    isMultiSelect = false
+                    selectedUserList.clear()
+                    getListUser()
                 },
                 { error ->
                     swipe_refresh.isRefreshing = false
@@ -172,6 +178,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
                 },
                 {
                     swipe_refresh.isRefreshing = false
+
                 })
         )
     }
@@ -202,6 +209,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         builder.setPositiveButton("Ya") { _, _ ->
 
             deleteUser(user)
+
         }
 
         builder.setNegativeButton(
