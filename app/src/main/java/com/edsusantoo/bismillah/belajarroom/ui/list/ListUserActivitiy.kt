@@ -1,5 +1,6 @@
 package com.edsusantoo.bismillah.belajarroom.ui.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -11,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.edsusantoo.bismillah.belajarroom.R
 import com.edsusantoo.bismillah.belajarroom.data.local.db.BelajarRoomDB
 import com.edsusantoo.bismillah.belajarroom.data.local.db.model.User
+import com.edsusantoo.bismillah.belajarroom.ui.detail.DetailActivity
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -32,6 +34,9 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_user)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
         setupDB()
         setupRecycler()
         swipe_refresh.isRefreshing = false
@@ -113,7 +118,7 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
                     if (isMultiSelect) {
                         multi_select(position)
                     } else {
-                        Toast.makeText(applicationContext, "CLCICK$position", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this@ListUserActivitiy,DetailActivity::class.java))
                     }
 
                 }

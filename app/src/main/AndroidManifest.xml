@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".ui.tambah.TambahUserActivitiy"/>
         <activity android:name=".ui.list.ListUserActivitiy"/>
+        <activity android:name=".ui.detail.DetailActivity">
+        </activity>
     </application>
 
 </manifest>

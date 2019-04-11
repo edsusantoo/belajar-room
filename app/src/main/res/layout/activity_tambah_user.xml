@@ -22,6 +22,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?android:attr/actionBarSize"
                     app:title="Tambah User"
+                    app:navigationIcon="@drawable/ic_arrow_back_white"
                     app:titleTextColor="@android:color/white"/>
 
             <ImageView

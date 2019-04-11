@@ -21,6 +21,9 @@ class TambahUserActivitiy : AppCompatActivity(),SwipeRefreshLayout.OnRefreshList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tambah_user)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
         setupDB()
 
         swipe_refresh.isRefreshing = false
