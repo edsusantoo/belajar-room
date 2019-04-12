@@ -89,6 +89,11 @@ class ListUserActivitiy : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         compositeDisposable.dispose()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getListUser()
+    }
+
     override fun onRefresh() {
         getListUser()
     }
